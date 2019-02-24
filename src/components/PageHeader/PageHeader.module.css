@@ -1,0 +1,17 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2rem 0;
+}
+
+.headerTitle {
+  font-size: 1.75rem;
+  color: #eee;
+}
+
+.headerSubtitle {
+  font-size: 0.75rem;
+  color: #ddd;
+}
