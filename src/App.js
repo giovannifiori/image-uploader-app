@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import socketIOClient from "socket.io-client";
+import { API_URL } from "./config/constants";
 
 import api from "./services/api";
 
@@ -14,6 +16,8 @@ class App extends Component {
   };
 
   componentDidMount() {
+    const socket = socketIOClient(API_URL);
+    socket.on("newImage", this.handleImageFromSocket);
     api
       .get("posts")
       .then(posts => {
@@ -37,6 +41,21 @@ class App extends Component {
       if (img.preview) URL.revokeObjectURL(img.preview);
     });
   }
+
+  handleImageFromSocket = image => {
+    if (this.state.uploadedImages.find(e => e._id === image._id)) {
+      return;
+    }
+    image = {
+      ...image,
+      uploaded: true
+    };
+    this.setState(prevState => {
+      return {
+        uploadedImages: [image, ...prevState.uploadedImages]
+      };
+    });
+  };
 
   mergeImageData(id, dataToMerge) {
     this.setState(prevState => {
